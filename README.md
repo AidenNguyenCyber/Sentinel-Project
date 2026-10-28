@@ -38,20 +38,20 @@ The scripts use **Active Directory cmdlets**, **CIM**, **PowerShell remoting**, 
 
 For example, the event-analysis script uses remoting to retrieve recent System events from the servers found in AD:
 
-\`\`\`powershell
+```powershell
 $Events = Invoke-Command -ComputerName $Servers.Name -ScriptBlock {
     Get-WinEvent -LogName System -MaxEvents 100
 }
-\`\`\`
+```
 
 For backup verification, the original and copied files are hashed and compared before the audit is written:
 
-\`\`\`powershell
+```powershell
 $OriginalHash = (Get-FileHash $File.FullName -Algorithm SHA256 -ErrorAction Stop).Hash
 Copy-Item $File.FullName $Destination -ErrorAction Stop
 $BackupHash = (Get-FileHash $Destination -Algorithm SHA256 -ErrorAction Stop).Hash
 $Status = if ($OriginalHash -eq $BackupHash) { "Verified" } else { "Mismatch" }
-\`\`\`
+```
 
 These excerpts illustrate the existing code; they are not new or rewritten versions of the scripts.
 
@@ -76,7 +76,7 @@ The HTML report does **not** include the backup audit or a health-check CSV. The
 ## Navigating and extending the code
 
 - **Review the existing code:** Start with [Sentinel/](Sentinel/), then follow the scripts in the order above.
-- **Change inventory fields:** Look at the CIM queries and \`[PSCustomObject]\` in [Inventory.ps1](Sentinel/Inventory.ps1).
+- **Change inventory fields:** Look at the CIM queries and `[PSCustomObject]` in [Inventory.ps1](Sentinel/Inventory.ps1).
 - **Adjust health thresholds:** Look for CPU, disk, and WinRM checks in [Health Check.ps1](Sentinel/Health%20Check.ps1).
 - **Review audit rules:** See the password-policy and firewall result objects in [Security Audit.ps1](Sentinel/Security%20Audit.ps1).
 - **Change the recovery safeguards:** Start with the approval prompt, service selection, and verification logic in [Recovery.ps1](Sentinel/Recovery.ps1).
