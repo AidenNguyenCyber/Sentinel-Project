@@ -2,7 +2,7 @@
 
 **Windows Server & Active Directory administration | PowerShell | MSSA lab**
 
-![Operation Sentinel — husky mascot](assets/operation-sentinel-husky.webp)
+<p align="center"><img src="assets/operation-sentinel-husky.webp" alt="Operation Sentinel — husky mascot" width="100%"></p>
 
 Operation Sentinel is a seven-script PowerShell project I built in the Microsoft Software & Systems Academy (MSSA) Windows Server lab. It brings together infrastructure inventory, health checks, Windows event analysis, security review, an approval-controlled service-recovery exercise, backup verification, and HTML reporting.
 
