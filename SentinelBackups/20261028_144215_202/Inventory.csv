@@ -1,0 +1,4 @@
+"Hostname","OperatingSystem","IPAddress","Manufacturer","Model","TotalPhysicalMemoryGB"
+"LON-CL1","Microsoft Windows 10 Enterprise","172.16.0.40","Microsoft Corporation","Virtual Machine","4"
+"LON-DC1","Microsoft Windows Server 2019 Datacenter Evaluation","172.16.0.10","Microsoft Corporation","Virtual Machine","4"
+"LON-SVR1","Microsoft Windows Server 2019 Datacenter Evaluation","172.16.0.11","Microsoft Corporation","Virtual Machine","4"
