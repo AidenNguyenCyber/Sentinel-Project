@@ -42,24 +42,25 @@ if ($Errors) {
     # -Wrap shows the full Message text instead of truncating it
     $Results | Format-Table -AutoSize -Wrap
     
-#Identify Service Failure
-Write-Host "Identify Service Failure"
+    #Identify Service Failure
+    Write-Host "Identify Service Failure"
 
-$ServiceFailures = $Errors | Where-Object {
-    $_.ProviderName -like "*Service*"
-}
-$ServiceFailures | Format-Table -AutoSize
+    $ServiceFailures = $Errors | Where-Object {
+        $_.ProviderName -like "*Service*"
+    }
+    $ServiceFailures | Format-Table -AutoSize
 
-# Identify actual service failures
-Write-Host "Identify Service Failures"
+    # Identify actual service failures
+    Write-Host "Identify Service Failures"
 
-$RecurringIssues = $ServiceFailures |
+    $RecurringIssues = $ServiceFailures |
     Group-Object PSComputerName, ProviderName, Id |
     Where-Object { $_.Count -gt 1 } |
     Sort-Object Count -Descending
 
-$RecurringIssues | Format-Table -AutoSize
+    $RecurringIssues | Format-Table -AutoSize
 
-#Export Event
-Write-Host "Export Event"
-$Errors | Export-Csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\EventLogs.csv" -NoTypeInformation
+    #Export Event
+    Write-Host "Export Event"
+    $Errors | Export-Csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\EventLogs.csv" -NoTypeInformation
+}
