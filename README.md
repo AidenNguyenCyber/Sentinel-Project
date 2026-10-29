@@ -28,7 +28,7 @@ The seven scripts are available in the [Sentinel folder](Sentinel/).
 | --- | --- | --- |
 | 01 | [Inventory.ps1](Sentinel/Inventory.ps1) | Finds computers in Active Directory, tests connectivity, collects system details through CIM, and exports [Inventory.csv](Inventory.csv). |
 | 02 | [Health Check.ps1](Sentinel/Health%20Check.ps1) | Reviews server CPU usage, available disk space, and important Windows services. Displays results and warning messages in the PowerShell console. |
-| 03 | [EventAnalysis.ps1](Sentinel/EventAnalysis.ps1) | Retrieves recent Windows System events, filters out informational entries, examines service events, and exports [EventLogs.csv](EventLogs.csv). |
+| 03 | [EventAnalysis.ps1](Sentinel/EventAnalysis.ps1) | Reviews Critical, Error, and Warning System events from the past seven days, examines service events, and exports [EventLogs.csv](EventLogs.csv). |
 | 04 | [Security Audit.ps1](Sentinel/Security%20Audit.ps1) | Reviews Windows Firewall profiles, domain password settings, and locked accounts. Exports [FirewallResults.csv](FirewallResults.csv) and [DomainResults.csv](DomainResults.csv). |
 | 05 | [Recovery.ps1](Sentinel/Recovery.ps1) | Finds stopped Print Spooler services, requests approval before starting a selected service, and records the result in [RecoveryResults.csv](RecoveryResults.csv). |
 | 06 | [BackupInterity.ps1](Sentinel/BackupInterity.ps1) | Backs up five CSV reports to a timestamped folder, compares SHA-256 hashes, and exports [BackupAudit.csv](BackupAudit.csv). |
@@ -92,6 +92,6 @@ The [Sentinel folder](Sentinel/) contains the PowerShell source for each part of
 
 ### Running the Project
 
-The scripts use the Adatum domain, Active Directory and PowerShell remoting access, and output paths configured for the MSSA lab. Those paths and settings must be adjusted for another environment. The recovery script can start a service when approved, so it should be used in a suitable Windows lab.
+The scripts use the Adatum domain and require Active Directory and PowerShell remoting access. CSV files and the HTML report are read from or saved to the project root folder, one level above the Sentinel scripts. File paths adjust when the project is moved, though domain settings may need changes in another environment. The recovery script can start a service when approved, so it should be used in a suitable Windows lab.
 
 The repository also contains the original outputs, backup files, generated [HTML report](SentinelReport.html), and [project document](Sentinel%20project.docx).

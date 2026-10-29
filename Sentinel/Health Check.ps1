@@ -36,26 +36,25 @@ foreach ($Server in $Servers) {
 }
 $WindowsServices |select-object PSComputerName, Name, Status| Format-Table -AutoSize
 
-#Flag unhealthy conditions using defined thresholds with Automation.
-#This function only trigger when condition meet.
+# Flag CPU, disk, and WinRM conditions against the lab thresholds.
 
 Write-Host"Flag unhealthy conditions using 3 defined thresholds (CPU,DISK,WINRM) with Automation"
 #Warning when High CPU Usage
 foreach ($CPU in $CPUUtilization.CounterSamples){
     if ($CPU.CookedValue -ge 80) {
-        Write-Host "Warning!! High Usage on $($CPU.path)"
+        Write-Warning "High CPU usage on $($CPU.Path)"
     }
 }
 #Warning Low Disk Space
 foreach ($Disk in $Diskspace){
-    if (($Disk.FreeSpace / $Disk.size) -lt 0.10){
-        Write-Host "Warning!! Disk Space is less than 10% $($Disk.SystemName)"
+    if ($Disk.Size -gt 0 -and ($Disk.FreeSpace / $Disk.Size) -lt 0.10) {
+        Write-Warning "Less than 10% free disk space on $($Disk.SystemName) ($($Disk.DeviceID))"
     }
 }
 #Warning When WinRM stop
 foreach ($service in $Windowservices){
-    if ($service.name -eq "WinRM" -and $service.starus -ne "Running") {
-        Write-Host "Warning!! WinRM stopped on $($service.name)"
+    if ($service.name -eq "WinRM" -and $service.Status -ne "Running") {
+        Write-Warning "WinRM is not running on $($service.PSComputerName)"
     }
 }
 

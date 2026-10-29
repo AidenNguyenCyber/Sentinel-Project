@@ -7,19 +7,16 @@ $Computers = get-adcomputer -filter * -Properties OperatingSystem |
 $Computers | Format-Table -AutoSize
 
 
-#Identify if computer is online
-Write-Host "Identify if computer is online"
-$OnlineComputers = @()
+# Check computer connectivity
+Write-Host "Check computer connectivity"
 foreach ($Computer in $Computers) {
-    if (Test-Connection -ComputerName $Computer.Name -Count 1 -Quiet) {        
-        $OnlineComputers += write-host "$($Computer.Name) is online."
+    if (Test-Connection -ComputerName $Computer.Name -Count 1 -Quiet) {
+        Write-Host "$($Computer.Name) is online."
     }
     else {
-        $OnlineComputers += write-host "$($Computer.Name) is offline."}
+        Write-Host "$($Computer.Name) is offline."
+    }
 }
-$OnlineComputers | Format-Table -AutoSize
-
-
 
 #Collect OS, hostname, IP address, and system information
 Write-Host "Collect OS, hostname, IP address, and system information"
@@ -49,5 +46,7 @@ $Inventory | Format-Table -AutoSize
 
 #Export inventory to CSV file
 Write-Host "Export inventory to CSV file"
-$Inventory | Export-Csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\Inventory.csv" -NoTypeInformation
+$SourceFolder = Split-Path -Path $PSScriptRoot -Parent
+$InventoryPath = Join-Path $SourceFolder "Inventory.csv"
+$Inventory | Export-Csv -Path $InventoryPath -NoTypeInformation
 

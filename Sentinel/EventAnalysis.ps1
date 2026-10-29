@@ -1,40 +1,49 @@
-#Investigate Windows errors and warnings.
-#Identify Server in Network
+# Identify Windows servers in Active Directory
 $Servers = Get-ADComputer -Filter * -Properties OperatingSystem |
-Where-Object OperatingSystem -Like "*Server*"
+    Where-Object { $_.OperatingSystem -like "*Server*" }
 
-#Retrieve recent Windows Event Logs.
-Write-Host "Retrieve recent Windows Event Logs"
-$Events = invoke-Command -ComputerName $servers.name -ScriptBlock {
-    Get-WinEvent -LogName System -MaxEvents 100
+if (-not $Servers) {
+    Write-Warning "No Windows servers found in Active Directory."
+    return
 }
-$Events | Format-Table -AutoSize
 
-#Filter errors and warnings
-Write-Host "Filter errors and warnings"
-$Errors = $Events | Where-Object {
-    $_.LevelDisplayName -ne "Information"
+$SourceFolder = Split-Path -Path $PSScriptRoot -Parent
+$EventLogPath = Join-Path $SourceFolder "EventLogs.csv"
+
+# Get Critical (1), Error (2), and Warning (3) System events from the last 7 days
+Write-Host "Retrieve recent Windows System events"
+$Events = @(Invoke-Command -ComputerName $Servers.Name -ErrorAction SilentlyContinue -ScriptBlock {
+    $Filter = @{
+        LogName   = "System"
+        Level     = @(1, 2, 3)
+        StartTime = (Get-Date).AddDays(-7)
+    }
+    Get-WinEvent -FilterHashtable $Filter -MaxEvents 100 -ErrorAction SilentlyContinue
+})
+
+if (-not $Events) {
+    Write-Host "No matching System events found."
+    return
 }
-$Errors | Format-Table -AutoSize
 
-#Identify Service Failure
-Write-Host "Identify Service Failure"
+# Keep the information needed for review and reporting
+$Results = $Events | Select-Object PSComputerName, TimeCreated,
+    @{Name = "Severity"; Expression = { $_.LevelDisplayName }},
+    Id, ProviderName, Message
 
-$ServiceFailures = $Errors | Where-Object {
-    $_.ProviderName -like "*Service*"
-}
+$Results | Format-Table -AutoSize -Wrap
+
+# Review service events and recurring issues
+Write-Host "Check service related events"
+$ServiceFailures = $Events | Where-Object { $_.ProviderName -like "*Service*" }
 $ServiceFailures | Format-Table -AutoSize
-
-# Identify actual service failures
-Write-Host "Identify Service Failures"
 
 $RecurringIssues = $ServiceFailures |
     Group-Object PSComputerName, ProviderName, Id |
     Where-Object { $_.Count -gt 1 } |
     Sort-Object Count -Descending
-
 $RecurringIssues | Format-Table -AutoSize
 
-#Export Event
-Write-Host "Export Event"
-$Errors | Export-Csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\EventLogs.csv" -NoTypeInformation
+# Save results
+Write-Host "Export Windows events"
+$Results | Export-Csv -Path $EventLogPath -NoTypeInformation

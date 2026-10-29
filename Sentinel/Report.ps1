@@ -1,10 +1,10 @@
-#Identify Sentinel Excel Files for Report
+# Identify CSV files for the HTML report
 write-host "Identify Sentinel Files for report"
-$SourceFolder = "C:\Users\Administrator.ADATUM\Desktop\Github"
+$SourceFolder = Split-Path -Path $PSScriptRoot -Parent
 $ImportFiles = @(
     "Inventory.csv"
     "DomainResults.csv"
-    "Eventlogs.csv"
+    "EventLogs.csv"
     "FirewallResults.csv"
     "RecoveryResults.csv"
 )
@@ -20,14 +20,14 @@ $Overview = foreach ($FileName in $ImportFiles) {
     if (Test-Path $Path) {
         try {
             $Data = @(Import-csv $Path -ErrorAction Stop)
-            $Status = "Availaible"
+            $Status = "Available"
         }
         catch {
             $Status = "Read Error"   
         }
     }
     $HeadLine += "<h2>$FileName</h2>"
-    if ($Status -eq "Availaible") {
+    if ($Status -eq "Available") {
         $HeadLine += ($Data | ConvertTo-Html -Fragment)
     }
     else {

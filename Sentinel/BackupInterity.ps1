@@ -1,12 +1,12 @@
-#Identify Sentinel Excel Files for Backup
+# Identify CSV files for backup
 write-host "Identify Sentinel Files for Backup"
 
-$SourceFolder = "C:\Users\Administrator.ADATUM\Desktop\Github"
+$SourceFolder = Split-Path -Path $PSScriptRoot -Parent
 
 $ImportFiles = @(
     "Inventory.csv"
     "DomainResults.csv"
-    "Eventlogs.csv"
+    "EventLogs.csv"
     "FirewallResults.csv"
     "RecoveryResults.csv"
 )

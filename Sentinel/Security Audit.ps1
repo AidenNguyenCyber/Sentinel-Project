@@ -1,8 +1,15 @@
-#Identify servers from Inventory
+$SourceFolder = Split-Path -Path $PSScriptRoot -Parent
+$InventoryPath = Join-Path $SourceFolder "Inventory.csv"
+
+# Identify servers from Inventory
 Write-Host "Import CSV from Inventory"
-$Servers = import-csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\Inventory.csv" |
+$Servers = Import-Csv -Path $InventoryPath -ErrorAction Stop |
 Where-Object { $_.OperatingSystem -like "*Server*" }
 
+if (-not $Servers) {
+    Write-Warning "No Windows servers found in Inventory.csv."
+    return
+}
 $Servers | Format-Table -AutoSize
 
 #Windows Firewall
@@ -27,11 +34,11 @@ $lockedAccounts | Format-Table -AutoSize
 # Evaluate Security Compliance
 Write-Host "Evaluate Security Compliance"
 
-$FirewallResults = foreach ($Profilez in $Firewall) {
+$FirewallResults = foreach ($Profile in $Firewall) {
     [PSCustomObject]@{
-        Server  = $Profilez.PSComputerName
-        Profile = $Profilez.Name
-        Status  = if ($Profilez.Enabled) { "Pass" } else { "Fail" }
+        Server  = $Profile.PSComputerName
+        Profile = $Profile.Name
+        Status  = if ($Profile.Enabled) { "Pass" } else { "Fail" }
     }
 }
 $FirewallResults | Format-Table -AutoSize
@@ -46,5 +53,5 @@ $DomainResults | Format-Table -AutoSize
 
 #Export Security
 Write-Host "Export Security"
-$FirewallResults | Export-Csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\FirewallResults.csv" -NoTypeInformation
-$DomainResults | Export-Csv -Path "C:\Users\Administrator.ADATUM\Desktop\Github\DomainResults.csv" -NoTypeInformation
+$FirewallResults | Export-Csv -Path (Join-Path $SourceFolder "FirewallResults.csv") -NoTypeInformation
+$DomainResults | Export-Csv -Path (Join-Path $SourceFolder "DomainResults.csv") -NoTypeInformation
