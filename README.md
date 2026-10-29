@@ -4,39 +4,39 @@
 
 <p align="center"><img src="assets/operation-sentinel-husky.webp" alt="Operation Sentinel — husky mascot" width="100%"></p>
 
-Operation Sentinel is a seven-script PowerShell project I built in the Microsoft Software & Systems Academy (MSSA) Windows Server lab. It brings together infrastructure inventory, health checks, Windows event analysis, security review, an approval-controlled service-recovery exercise, backup verification, and HTML reporting.
+During Microsoft Software & Systems Academy (MSSA), I built Operation Sentinel to practice Windows administration with PowerShell. The project has seven scripts covering computer inventory, server health, Windows events, security checks, service recovery, backup verification, and HTML reporting.
 
-**Lab environment:** Adatum Active Directory domain, Windows Server 2019, Windows 10, and PowerShell. This is a hands-on **lab implementation**, not a production monitoring platform or a Microsoft Sentinel SIEM deployment.
+**Lab environment:** I used the Adatum Active Directory domain with Windows Server 2019 and Windows 10 in the MSSA lab.
 
-## Scenario & purpose
+## Project overview
 
-An IT administrator supporting multiple Windows computers needs a repeatable way to answer a few basic questions: What machines are in the domain? Are server resources and services healthy? What recent event-log warnings need attention? Do firewall and domain settings meet the lab's checks? If a test service stops, can the administrator review the issue before taking action?
+I wanted a way to check several Windows computers without repeating the same steps on each one. With these scripts, I can find computers in Active Directory, check server resources, review recent Windows events, and look for security settings that need attention.
 
-I developed Operation Sentinel to investigate those questions with PowerShell and keep inspectable outputs for follow-up. The scripts are connected through their reports, but **they are run individually** in this version; there is no scheduled monitoring service or single-command launcher.
+I also added a service recovery exercise that asks for approval before starting a stopped service, along with backup checks and an HTML report. I ran the scripts individually and saved their results for review.
 
 ## Workflow
 
-![Seven-script Operation Sentinel technical workflow](assets/operation-sentinel-workflow.svg)
+![Operation Sentinel workflow](assets/operation-sentinel-workflow.svg)
 
-### Source scripts
+### Scripts
 
-The original scripts are retained under [**Sentinel/**](Sentinel/) with their existing names and paths.
+All seven scripts are in the [Sentinel folder](Sentinel/).
 
-| Step | Script | Purpose and output |
+| Step | Script | What it does |
 | --- | --- | --- |
-| 01 | [Inventory.ps1](Sentinel/Inventory.ps1) | Discovers domain computers with Active Directory, queries Windows system details through CIM, and exports [Inventory.csv](Inventory.csv). |
-| 02 | [Health Check.ps1](Sentinel/Health%20Check.ps1) | Reviews server CPU usage, disk space, and key services; prints threshold warnings to the console. **No health CSV was produced.** |
-| 03 | [EventAnalysis.ps1](Sentinel/EventAnalysis.ps1) | Retrieves recent System log events, filters non-informational records, checks service-related events, and exports [EventLogs.csv](EventLogs.csv). |
-| 04 | [Security Audit.ps1](Sentinel/Security%20Audit.ps1) | Checks firewall profiles, domain password-policy settings, and locked accounts; exports [FirewallResults.csv](FirewallResults.csv) and [DomainResults.csv](DomainResults.csv). |
-| 05 | [Recovery.ps1](Sentinel/Recovery.ps1) | Looks for stopped Spooler services, asks for explicit approval before starting a selected service, and writes [RecoveryResults.csv](RecoveryResults.csv). |
-| 06 | [BackupInterity.ps1](Sentinel/BackupInterity.ps1) | Copies five report CSVs into a timestamped folder, compares SHA-256 hashes, and exports [BackupAudit.csv](BackupAudit.csv). *The source filename retains its original spelling.* |
-| 07 | [Report.ps1](Sentinel/Report.ps1) | Reads five source CSVs and combines their tables with a record-count summary into [SentinelReport.html](SentinelReport.html). |
+| 01 | [Inventory.ps1](Sentinel/Inventory.ps1) | Finds computers in Active Directory, collects system details with CIM, and saves [Inventory.csv](Inventory.csv). |
+| 02 | [Health Check.ps1](Sentinel/Health%20Check.ps1) | Checks CPU usage, disk space, and key services. Shows warnings in the console instead of saving a CSV. |
+| 03 | [EventAnalysis.ps1](Sentinel/EventAnalysis.ps1) | Reviews recent Windows System events, filters out informational entries, checks service events, and saves [EventLogs.csv](EventLogs.csv). |
+| 04 | [Security Audit.ps1](Sentinel/Security%20Audit.ps1) | Checks Windows Firewall profiles, domain password settings, and locked accounts. Saves [FirewallResults.csv](FirewallResults.csv) and [DomainResults.csv](DomainResults.csv). |
+| 05 | [Recovery.ps1](Sentinel/Recovery.ps1) | Finds stopped Spooler services, asks for approval before starting one, and saves [RecoveryResults.csv](RecoveryResults.csv). |
+| 06 | [BackupInterity.ps1](Sentinel/BackupInterity.ps1) | Copies five CSV reports to a dated backup folder, compares SHA-256 hashes, and saves [BackupAudit.csv](BackupAudit.csv). |
+| 07 | [Report.ps1](Sentinel/Report.ps1) | Combines five CSV reports into [SentinelReport.html](SentinelReport.html), with summary counts and tables. |
 
-### PowerShell approach
+### How I used PowerShell
 
-The scripts use **Active Directory cmdlets**, **CIM**, **PowerShell remoting**, **Windows event logs**, **custom objects**, CSV files, and SHA-256 checksums.
+I used Active Directory cmdlets to find computers, CIM to collect system information, and PowerShell remoting to query servers. I also worked with Windows event logs, custom objects, CSV reports, and SHA-256 hashes.
 
-For example, the event-analysis script uses remoting to retrieve recent System events from the servers found in AD:
+To review recent Windows events on the servers, I used PowerShell remoting:
 
 ```powershell
 $Events = Invoke-Command -ComputerName $Servers.Name -ScriptBlock {
@@ -44,7 +44,7 @@ $Events = Invoke-Command -ComputerName $Servers.Name -ScriptBlock {
 }
 ```
 
-For backup verification, the original and copied files are hashed and compared before the audit is written:
+To verify the backups, I compared the SHA-256 hashes of each original file and its copy:
 
 ```powershell
 $OriginalHash = (Get-FileHash $File.FullName -Algorithm SHA256 -ErrorAction Stop).Hash
@@ -53,35 +53,33 @@ $BackupHash = (Get-FileHash $Destination -Algorithm SHA256 -ErrorAction Stop).Ha
 $Status = if ($OriginalHash -eq $BackupHash) { "Verified" } else { "Mismatch" }
 ```
 
-These excerpts illustrate the existing code; they are not new or rewritten versions of the scripts.
+## Lab results
 
-## Results & evidence
+Here are the results I saved from the Adatum lab:
 
-The repository includes actual output files saved from the Adatum lab. The following are **observed results**, not estimates.
-
-| Evidence | Recorded result |
+| Check | Result |
 | --- | --- |
-| [Infrastructure inventory](Inventory.csv) | **3 machines**: LON-CL1, LON-DC1, and LON-SVR1. |
-| [Windows event review](EventLogs.csv) | **26 saved event records** for follow-up. These are not automatically confirmed security incidents. |
-| [Firewall checks](FirewallResults.csv) | **6 Pass** entries across the Domain, Private, and Public profiles on the two servers. |
-| [Domain policy](DomainResults.csv) | Password length **Fail**; complexity **Pass**; lockout threshold **Fail** against the script's lab criteria. **0 locked accounts** recorded. |
-| [Controlled recovery](RecoveryResults.csv) | Approval was **N**; the Spooler action was **Skipped**. This does **not** demonstrate a successful restart. |
-| [Backup integrity](BackupAudit.csv) | **5 files Verified** by matching source and copied SHA-256 hashes. See the [saved backup snapshot](SentinelBackups/20261028_144215_202/). |
-| [HTML report](SentinelReport.html) | Generated an HTML summary and detail tables from **five CSV sources**: inventory, domain, events, firewall, and recovery. |
+| [Infrastructure inventory](Inventory.csv) | Found **3 computers**: LON-CL1, LON-DC1, and LON-SVR1. |
+| [Windows event review](EventLogs.csv) | Saved **26 Windows event records** for review. |
+| [Firewall checks](FirewallResults.csv) | Recorded **6 Pass** results across the Domain, Private, and Public firewall profiles on two servers. |
+| [Domain policy](DomainResults.csv) | Password length: **Fail**. Complexity: **Pass**. Lockout threshold: **Fail** against my lab checks. **0 locked accounts**. |
+| [Controlled recovery](RecoveryResults.csv) | I entered **N** at the approval prompt, so the Spooler restart was **Skipped**. |
+| [Backup integrity](BackupAudit.csv) | Verified **5 backup files** using matching SHA-256 hashes. The copies are in the [backup folder](SentinelBackups/20261028_144215_202/). |
+| [HTML report](SentinelReport.html) | Combined **5 CSV reports** into an HTML report with a summary and detailed tables. |
 
-The HTML report does **not** include the backup audit or a health-check CSV. The health-check script displays results in the console instead of exporting a file.
+The health check shows its results in the console. The HTML report uses the five CSV files from inventory, domain settings, events, firewall checks, and recovery; it doesn't include the backup audit.
 
-**What this demonstrates:** I used PowerShell to inspect a small Windows domain, surface configuration and event findings, preserve reports, and verify copies of the resulting CSVs. The recovery script has an approval gate, but the saved example documents a **skipped** action rather than a verified repair.
+Together, these scripts gave me practice collecting information from Windows servers, checking security settings, reviewing events, and turning results into reports. The saved recovery result shows the approval check working, not a completed service restart.
 
-## Navigating and extending the code
+## Exploring the scripts
 
-- **Review the existing code:** Start with [Sentinel/](Sentinel/), then follow the scripts in the order above.
-- **Change inventory fields:** Look at the CIM queries and `[PSCustomObject]` in [Inventory.ps1](Sentinel/Inventory.ps1).
-- **Adjust health thresholds:** Look for CPU, disk, and WinRM checks in [Health Check.ps1](Sentinel/Health%20Check.ps1).
-- **Review audit rules:** See the password-policy and firewall result objects in [Security Audit.ps1](Sentinel/Security%20Audit.ps1).
-- **Change the recovery safeguards:** Start with the approval prompt, service selection, and verification logic in [Recovery.ps1](Sentinel/Recovery.ps1).
-- **Change report contents:** See the input filename arrays in [BackupInterity.ps1](Sentinel/BackupInterity.ps1) and [Report.ps1](Sentinel/Report.ps1).
+- **Start here:** Open the [Sentinel folder](Sentinel/) to see all seven scripts.
+- **Inventory:** See how I used CIM queries and `[PSCustomObject]` in [Inventory.ps1](Sentinel/Inventory.ps1).
+- **Health checks:** Review the CPU, disk, and WinRM checks in [Health Check.ps1](Sentinel/Health%20Check.ps1).
+- **Security:** See the password and firewall checks in [Security Audit.ps1](Sentinel/Security%20Audit.ps1).
+- **Recovery:** Look at the approval prompt and service verification in [Recovery.ps1](Sentinel/Recovery.ps1).
+- **Reporting:** Review the input file lists in [BackupInterity.ps1](Sentinel/BackupInterity.ps1) and [Report.ps1](Sentinel/Report.ps1).
 
-**Run only in an appropriate Windows lab.** These original scripts assume the Adatum environment, available AD/remote-management access, and a hard-coded output folder under the lab administrator's desktop. Some commands query remote systems, and the recovery exercise can start a service if approved. The files have been preserved for mentor review; they have **not been modified, refactored, or retested during this documentation update**.
+**Running the scripts:** They use the Adatum lab domain, Active Directory and remote management access, and an output folder on the lab administrator's desktop. Run them in a Windows lab, since the recovery script can start a service after approval.
 
-Original outputs, backups, the generated report, the [project document](Sentinel%20project.docx), and VS Code settings remain in their existing locations.
+The repository also includes the saved CSV files, backups, [HTML report](SentinelReport.html), and [project document](Sentinel%20project.docx).
