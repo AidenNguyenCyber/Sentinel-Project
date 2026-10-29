@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="790" viewBox="0 0 1400 790" role="img" aria-label="Operation Sentinel seven-step PowerShell workflow and saved lab results">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081725"/><stop offset="1" stop-color="#102E43"/></linearGradient></defs>
+<rect width="1400" height="790" fill="url(#bg)"/>
+<path d="M1010 0H1400V340Z" fill="#54BDF3" opacity=".025"/><path d="M0 670L260 790H0Z" fill="#54BDF3" opacity=".035"/>
+<g font-family="Segoe UI, Arial, sans-serif">
+<g transform="translate(44 32)" stroke="#69C5EF" stroke-width="3" fill="none" stroke-linejoin="round"><path d="M36 0l34 11v26c0 23-15 43-34 52C17 80 2 60 2 37V11Z"/><path d="M17 43l13 12 25-29"/></g>
+<text x="136" y="69" font-size="35" font-weight="700" letter-spacing="1.4" fill="#F2F9FF">OPERATION SENTINEL</text>
+<text x="136" y="104" font-size="18" fill="#A9C9DD">PowerShell infrastructure inspection · Active Directory / Windows Server lab</text>
+<rect x="1120" y="44" width="238" height="48" rx="24" fill="#0E3B53" stroke="#4A839D"/>
+<text x="1142" y="74" font-size="18" font-weight="600" fill="#AEE8FB">7 focused scripts</text>
+<line x1="42" y1="136" x2="1358" y2="136" stroke="#315269"/>
+<text x="44" y="168" font-size="15" font-weight="700" letter-spacing="1.5" fill="#72B7D7">INSPECT &amp; ASSESS</text>
+<rect x="42" y="189" width="305" height="213" rx="13" fill="#122C3F" /><rect x="42" y="189" width="305" height="213" rx="13" fill="none" stroke="#35607A"/><rect x="42" y="189" width="305" height="5" rx="3" fill="#73D9D2"/>
+ <rect x="59" y="214" width="36" height="36" rx="18" fill="#73D9D2" opacity=".14"/><text x="65" y="238" fill="#73D9D2" font-size="18" font-weight="700">01</text>
+ <text x="106" y="238" fill="#F2F8FF" font-size="20" font-weight="700">Inventory</text>
+ <text x="64" y="292" font-size="16" fill="#BDD4E1">AD discovery + CIM</text><text x="64" y="321" font-size="16" fill="#BDD4E1">Computer / OS / IP details</text>
+ <rect x="60" y="356" width="269" height="29" rx="7" fill="#73D9D2" opacity=".1"/>
+ <text x="72" y="375" font-size="14" font-weight="600" fill="#73D9D2">3 lab machines inventoried</text><rect x="379" y="189" width="305" height="213" rx="13" fill="#122C3F" /><rect x="379" y="189" width="305" height="213" rx="13" fill="none" stroke="#35607A"/><rect x="379" y="189" width="305" height="5" rx="3" fill="#6CBDEB"/>
+ <rect x="396" y="214" width="36" height="36" rx="18" fill="#6CBDEB" opacity=".14"/><text x="402" y="238" fill="#6CBDEB" font-size="18" font-weight="700">02</text>
+ <text x="443" y="238" fill="#F2F8FF" font-size="20" font-weight="700">Health Check</text>
+ <text x="401" y="292" font-size="16" fill="#BDD4E1">CPU, disk and services</text><text x="401" y="321" font-size="16" fill="#BDD4E1">Console output + warnings</text>
+ <rect x="397" y="356" width="269" height="29" rx="7" fill="#6CBDEB" opacity=".1"/>
+ <text x="409" y="375" font-size="14" font-weight="600" fill="#6CBDEB">No CSV generated</text><rect x="716" y="189" width="305" height="213" rx="13" fill="#122C3F" /><rect x="716" y="189" width="305" height="213" rx="13" fill="none" stroke="#35607A"/><rect x="716" y="189" width="305" height="5" rx="3" fill="#E4C388"/>
+ <rect x="733" y="214" width="36" height="36" rx="18" fill="#E4C388" opacity=".14"/><text x="739" y="238" fill="#E4C388" font-size="18" font-weight="700">03</text>
+ <text x="780" y="238" fill="#F2F8FF" font-size="20" font-weight="700">Event Analysis</text>
+ <text x="738" y="292" font-size="16" fill="#BDD4E1">System event-log review</text><text x="738" y="321" font-size="16" fill="#BDD4E1">Warnings / service issues</text>
+ <rect x="734" y="356" width="269" height="29" rx="7" fill="#E4C388" opacity=".1"/>
+ <text x="746" y="375" font-size="14" font-weight="600" fill="#E4C388">26 rows in EventLogs.csv</text><rect x="1053" y="189" width="305" height="213" rx="13" fill="#122C3F" /><rect x="1053" y="189" width="305" height="213" rx="13" fill="none" stroke="#35607A"/><rect x="1053" y="189" width="305" height="5" rx="3" fill="#B8A2EE"/>
+ <rect x="1070" y="214" width="36" height="36" rx="18" fill="#B8A2EE" opacity=".14"/><text x="1076" y="238" fill="#B8A2EE" font-size="18" font-weight="700">04</text>
+ <text x="1117" y="238" fill="#F2F8FF" font-size="20" font-weight="700">Security Audit</text>
+ <text x="1075" y="292" font-size="16" fill="#BDD4E1">Firewall + AD policy</text><text x="1075" y="321" font-size="16" fill="#BDD4E1">Locked-account review</text>
+ <rect x="1071" y="356" width="269" height="29" rx="7" fill="#B8A2EE" opacity=".1"/>
+ <text x="1083" y="375" font-size="14" font-weight="600" fill="#B8A2EE">6 firewall passes · 2 policy fails</text>
+<text x="44" y="453" font-size="15" font-weight="700" letter-spacing="1.5" fill="#72B7D7">CONTROLLED ACTION &amp; REPORTING</text>
+<rect x="180" y="475" width="314" height="208" rx="13" fill="#122C3F" /><rect x="180" y="475" width="314" height="208" rx="13" fill="none" stroke="#35607A"/><rect x="180" y="475" width="314" height="5" rx="3" fill="#F0B88C"/>
+ <rect x="197" y="500" width="36" height="36" rx="18" fill="#F0B88C" opacity=".14"/><text x="203" y="524" fill="#F0B88C" font-size="18" font-weight="700">05</text>
+ <text x="244" y="524" fill="#F2F8FF" font-size="20" font-weight="700">Recovery</text>
+ <text x="202" y="578" font-size="16" fill="#BDD4E1">Review stopped Spooler</text><text x="202" y="607" font-size="16" fill="#BDD4E1">Require explicit approval</text>
+ <rect x="198" y="637" width="278" height="29" rx="7" fill="#F0B88C" opacity=".1"/>
+ <text x="210" y="656" font-size="14" font-weight="600" fill="#F0B88C">Saved example: skipped</text><rect x="543" y="475" width="314" height="208" rx="13" fill="#122C3F" /><rect x="543" y="475" width="314" height="208" rx="13" fill="none" stroke="#35607A"/><rect x="543" y="475" width="314" height="5" rx="3" fill="#7EDDB2"/>
+ <rect x="560" y="500" width="36" height="36" rx="18" fill="#7EDDB2" opacity=".14"/><text x="566" y="524" fill="#7EDDB2" font-size="18" font-weight="700">06</text>
+ <text x="607" y="524" fill="#F2F8FF" font-size="20" font-weight="700">Backup Integrity</text>
+ <text x="565" y="578" font-size="16" fill="#BDD4E1">Copy five output CSVs</text><text x="565" y="607" font-size="16" fill="#BDD4E1">Compare SHA-256 hashes</text>
+ <rect x="561" y="637" width="278" height="29" rx="7" fill="#7EDDB2" opacity=".1"/>
+ <text x="573" y="656" font-size="14" font-weight="600" fill="#7EDDB2">5 files verified</text><rect x="906" y="475" width="314" height="208" rx="13" fill="#122C3F" /><rect x="906" y="475" width="314" height="208" rx="13" fill="none" stroke="#35607A"/><rect x="906" y="475" width="314" height="5" rx="3" fill="#85CCF2"/>
+ <rect x="923" y="500" width="36" height="36" rx="18" fill="#85CCF2" opacity=".14"/><text x="929" y="524" fill="#85CCF2" font-size="18" font-weight="700">07</text>
+ <text x="970" y="524" fill="#F2F8FF" font-size="20" font-weight="700">HTML Report</text>
+ <text x="928" y="578" font-size="16" fill="#BDD4E1">Read five source CSVs</text><text x="928" y="607" font-size="16" fill="#BDD4E1">Summary + detail tables</text>
+ <rect x="924" y="637" width="278" height="29" rx="7" fill="#85CCF2" opacity=".1"/>
+ <text x="936" y="656" font-size="14" font-weight="600" fill="#85CCF2">Saved SentinelReport.html</text>
+<line x1="42" y1="719" x2="1358" y2="719" stroke="#315269"/>
+<text x="44" y="756" font-size="15" font-weight="700" fill="#72B7D7">LAB EVIDENCE</text>
+<text x="177" y="756" font-size="15" fill="#A9C9DD">Adatum · LON-CL1 / LON-DC1 / LON-SVR1 · Windows PowerShell / Active Directory</text>
+</g></svg>
